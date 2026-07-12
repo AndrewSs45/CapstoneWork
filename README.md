@@ -1,55 +1,68 @@
-Este proyecto es un simulador de un ecosistema el cuál se encuentra desarrollado en el lenguaje de programación java.
-Este sigue un conjunto de reglas, para poder simular la vida de cada uno de los seres que conviven en ese ecosistema, representando así 
-el crecimiento y su supervivecia en el entorno ecológico.
+# Ecosystem Simulator
 
-En el ecosistema hay arboles, animales, agua y aire, los cuales tienen sus reglas de supervivencia y reproducción
-que van de generación en generación, actualizando el estado de cada celda según las interacciones que este simulador tenga.
+A Conway's Game-of-Life inspired ecosystem simulator built in Java. Trees, animals, water, and meteorites interact across generations according to configurable rules.
 
-Gen: 0
+## Features
 
-💨  💨  💨  🌳  💨  
-💨  💨  💧  🐑  💨  
-💨  💨  🌳  🌳  💨  
-💨  💨  🐑  🐑  💨  
-💨  💨  💨  💨  💨
---------------------
-Gen: X
+- **Trees** 🌳 — grow and spread; die without water
+- **Animals** 🐑 — move on even generations, reproduce near trees + water
+- **Water** 💧 — essential for survival; spreads downward on multiples of 3 generations
+- **Meteorites** ☄️ — destroy everything in their blast radius
+- **Random maps** via the `m=rnd` option
+- Configurable grid size, speed, generations, and animal movement direction
 
-💨  💨  🐑  🐑  🌳  
-💨  💨  💧  🐑  🌳  
-💨  💧  🐑  🐑  🌳  
-💧  💧  🐑  🐑  🌳  
-💧  🐑  🐑  🌳  💨
---------------------
+## Usage
 
-En los elementos podemos contar con:
+```bash
+# Run with default parameters (10x10, 20 generations)
+java -jar capstone-work-1.0.0.jar
 
-0 (Representa al vacío (Aire)) 💨
+# Custom parameters
+java -jar capstone-work-1.0.0.jar w=15 h=15 g=50 s=250 n=2 m=01030#20100#00030##
+```
 
-Este elemento representa al aire solo, significando en una casilla vacía en la cual puede nacer algo o puede pasar un animal por ahí.
+### Parameters
 
-1 (Representa a los árboles) 🌳
+| Flag | Description | Allowed Values |
+|------|-------------|----------------|
+| `w` | Width | 5, 10, 15, 40, 80 |
+| `h` | Height | 5, 10, 15, 40 |
+| `g` | Generations | 0 – 1000 |
+| `s` | Speed (ms delay) | 0, 250, 500, 1000, 4000 |
+| `n` | Direction (1=right, 2=down, 3=left, 4=up) | 1, 2, 3, 4 |
+| `m` | Map string or `rnd` for random | `#`-delimited rows |
+| `c` | Meteorite coordinates | `row,col` |
 
-Son la fuente de alimentación y uno de los medios indiscutibles de reproducción que hay entre los animales
+### Map format
 
-2 (Representa a los animales) 🐑
+Rows are separated by `#`. Each character is a cell type:
+- `0` = Air
+- `1` = Tree
+- `2` = Animal
+- `3` = Water
 
-Los animales solo se pueden mover en las generaciones pares, pero además de eso si hay 2 animales, una celda vacía y agua y comida podemos reproducirlos
+Example: `01030#20100#00030##`
 
-3 (Representa al agua) 💧
+### Run with Maven
 
-Este es el elemento más importante para la supervivencia de las especies que coexisten en el ecosistema, además de que es
-una constante, osea donde esté el agua ahí permanecerá, pero claro dado que si sus reglas se cumplen, esta puede expandirse.
+```bash
+mvn clean compile exec:java
+```
 
+## Build
 
-Para finalizar para este proyecto me gustaría agradecer a 
-Jhampo -> Por su video de youtube de como hizo el juego de la vida en java
-https://www.youtube.com/watch?v=WNfaLMjsqF8
+```bash
+mvn clean package
+java -jar target/capstone-work-1.0.0.jar
+```
 
-Chemaclass -> Por su repositorio de github en el cuál también estaba otro juego de la vida en el cuál pude basarme en unas cositas
-https://github.com/Chemaclass/juego-de-la-vida/blob/master/src/juegovida/Juego.java
+## Requirements
 
-W3Schools -> Por sus explicaciones con relación a algunos temas que no tenía del todo claros en java
-https://www.w3schools.com/java/default.asp
+- Java 17+
+- Apache Maven 3.8+
 
-El proyecto no es perfecto, pero lo iré mejorando a medida que pase el tiempo.
+## Acknowledgements
+
+- [Jhampo](https://www.youtube.com/watch?v=WNfaLMjsqF8) — Conway's Game of Life in Java tutorial
+- [Chemaclass](https://github.com/Chemaclass/juego-de-la-vida) — reference implementation
+- [W3Schools](https://www.w3schools.com/java/default.asp) — Java reference
