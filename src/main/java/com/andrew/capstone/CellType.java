@@ -8,19 +8,25 @@ public enum CellType {
     METEORITE(4);
 
     private final int value;
+    private final String symbol;
 
     CellType(int value) {
         this.value = value;
+        this.symbol = String.valueOf(value);
     }
 
     public int getValue() {
         return value;
     }
 
+    public String getSymbol() {
+        return symbol;
+    }
+
     public static CellType fromValue(int value) {
         for (CellType type : values()) {
             if (type.value == value) return type;
         }
-        return AIR;
+        throw new IllegalArgumentException("Unknown cell type value: " + value);
     }
 }

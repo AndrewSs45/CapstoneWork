@@ -38,6 +38,10 @@ public class Grid {
         return new Grid(grid);
     }
 
+    public Grid evolve() {
+        return evolve(0, 1);
+    }
+
     public Grid evolve(int generation, int direction) {
         int[][] next = new int[rows][cols];
         for (int r = 0; r < rows; r++) {
