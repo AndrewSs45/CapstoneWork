@@ -1,5 +1,7 @@
 package com.andrew.capstone;
 
+import com.andrew.capstone.CellType;
+
 public class Grid {
 
     private static final int[][] INNER_RING = {
@@ -50,52 +52,52 @@ public class Grid {
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                int currentType = cells[r][c];
-                int treesInInner = countNeighbors(r, c, 1, INNER_RING);
-                int animalsInInner = countNeighbors(r, c, 2, INNER_RING);
-                int waterInInner = countNeighbors(r, c, 3, INNER_RING);
-                int treesInOuter = countNeighbors(r, c, 1, OUTER_RING);
-                int waterInOuter = countNeighbors(r, c, 3, OUTER_RING);
+                CellType currentType = CellType.fromValue(cells[r][c]);
+                int treesInInner = countNeighbors(r, c, CellType.TREE.getValue(), INNER_RING);
+                int animalsInInner = countNeighbors(r, c, CellType.ANIMAL.getValue(), INNER_RING);
+                int waterInInner = countNeighbors(r, c, CellType.WATER.getValue(), INNER_RING);
+                int treesInOuter = countNeighbors(r, c, CellType.TREE.getValue(), OUTER_RING);
+                int waterInOuter = countNeighbors(r, c, CellType.WATER.getValue(), OUTER_RING);
 
                 switch (currentType) {
-                    case 0:
+                    case AIR:
                         if (treesInInner >= 2) {
-                            next[r][c] = 1;
+                            next[r][c] = CellType.TREE.getValue();
                         } else if (generation % 2 == 0 && animalsInInner == 2) {
                             if ((treesInInner + treesInOuter) >= 1 && (waterInInner + waterInOuter) >= 1) {
-                                next[r][c] = 2;
+                                next[r][c] = CellType.ANIMAL.getValue();
                             }
                         } else if (generation % 3 == 0) {
                             if (checkWaterAbove(r, c)) {
-                                next[r][c] = 3;
+                                next[r][c] = CellType.WATER.getValue();
                             }
                         }
                         break;
-                    case 1:
+                    case TREE:
                         if ((waterInInner + waterInOuter) < 1) {
-                            next[r][c] = 0;
+                            next[r][c] = CellType.AIR.getValue();
                         }
                         break;
-                    case 2:
+                    case ANIMAL:
                         if ((treesInInner + treesInOuter) < 1 || (waterInInner + waterInOuter) < 1) {
-                            next[r][c] = 0;
+                            next[r][c] = CellType.AIR.getValue();
                         } else if (generation % 2 == 0) {
                             int[] nextPos = getNextPosition(r, c, direction);
                             int nr = nextPos[0];
                             int nc = nextPos[1];
                             if (isValid(nr, nc)) {
                                 int nextType = cells[nr][nc];
-                                if (nextType == 0 || nextType == 1) {
-                                    next[r][c] = 0;
-                                    next[nr][nc] = 2;
+                                if (nextType == CellType.AIR.getValue() || nextType == CellType.TREE.getValue()) {
+                                    next[r][c] = CellType.AIR.getValue();
+                                    next[nr][nc] = CellType.ANIMAL.getValue();
                                 }
                             }
                         }
                         break;
-                    case 3:
+                    case WATER:
                         break;
-                    case 4:
-                        next[r][c] = 0;
+                    case METEORITE:
+                        next[r][c] = CellType.AIR.getValue();
                         break;
                 }
             }
@@ -109,10 +111,10 @@ public class Grid {
                 int nr = r + coord[0];
                 int nc = c + coord[1];
                 if (isValid(nr, nc)) {
-                    cells[nr][nc] = 0;
+                    cells[nr][nc] = CellType.AIR.getValue();
                 }
             }
-            cells[r][c] = 4;
+            cells[r][c] = CellType.METEORITE.getValue();
         }
     }
 

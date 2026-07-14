@@ -17,12 +17,12 @@ public final class DisplayUtil {
     }
 
     public static String getSymbol(int type) {
-        return switch (type) {
-            case 1 -> "🌳";
-            case 2 -> "🐑";
-            case 3 -> "💧";
-            case 4 -> "☄️";
-            default -> "💨";
+        return switch (CellType.fromValue(type)) {
+            case TREE -> "\uD83C\uDF33";
+            case ANIMAL -> "\uD83D\uDC11";
+            case WATER -> "\uD83D\uDCA7";
+            case METEORITE -> "\u2604\uFE0F";
+            default -> "\uD83D\uDCA8";
         };
     }
 }
