@@ -20,6 +20,10 @@ public class Main {
         System.out.print(parser.getReport());
         System.out.println("Todos los parametros están correctos :D");
 
+        if (parser.getMap() == null) {
+            System.out.println("No se puede ejecutar la simulación debido a que el mapa es nulo.");
+            return;
+        }
         Grid grid = Grid.parse(parser.getMap(), parser.getHeight(), parser.getWidth());
 
         int[] meteorite = parser.getMeteoriteCoords();
